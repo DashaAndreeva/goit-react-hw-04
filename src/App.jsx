@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import SearchBar from "./components/searchBar/SearchBar";
 import ImageGallery from "./components/imageGallery/ImageGallery";
+import ImageModal from "./components/imageModal/ImageModal";
 import Loader from "./components/loader/Loader";
 import ErrorMessage from "./components/errorMessage/ErrorMessage";
 import LoadMoreBtn from "./components/loadMoreBtn/LoadMoreBtn";
@@ -16,7 +17,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedImages, setSelectedImages] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const fetchImages = async (searchQuery, numPage) => {
     try {
@@ -54,16 +55,44 @@ function App() {
     }
   }, [query, page]);
 
-  function onSubmit() {
-    setError();
+  function handleSubmit(searchQuery) {
+    setQuery(searchQuery);
+    setError(null);
+    setPage(1);
+    setImages([]);
   }
+
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
+
+  const modalOpen = (photo) => {
+    setSelectedImage(photo);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   return (
     <>
-      <SearchBar onSubmit={onSubmit} />
-      <LoadMoreBtn />
-      {/* {error ? <ErrorMessage /> : <ImageGallery />} */}
-      <Loader />
+      <SearchBar onSubmit={handleSubmit} />
+      {error ? (
+        <ErrorMessage />
+      ) : (
+        <ImageGallery images={images} openModal={modalOpen} />
+      )}
+      {images.length > 0 && !error && <LoadMoreBtn onClick={handleLoadMore} />}
+
+      {modalIsOpen && selectedImage && (
+        <ImageModal
+          image={selectedImage}
+          openModal={modalOpen}
+          closeModal={closeModal}
+        />
+      )}
+      {loading && <Loader />}
       <Toaster position="top-right" reverseOrder={false} />
     </>
   );
