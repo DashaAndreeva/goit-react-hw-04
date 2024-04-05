@@ -34,7 +34,7 @@ function App() {
       return res.data.results.slice(0, 9);
     } catch (error) {
       console.log("Error: ", error);
-      return;
+      return [];
     } finally {
       setLoading(false);
     }
@@ -43,16 +43,16 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const newImages = await fetchImages(query, page);
-        setImages((prevImg) => [...prevImg, newImages]);
+        if (query !== "") {
+          const newImages = await fetchImages(query, page);
+          setImages((prevImg) => [...prevImg, ...newImages]);
+        }
       } catch (error) {
         setError(error);
       }
     };
 
-    if (query !== "") {
-      fetchData();
-    }
+    fetchData();
   }, [query, page]);
 
   function handleSubmit(searchQuery) {
