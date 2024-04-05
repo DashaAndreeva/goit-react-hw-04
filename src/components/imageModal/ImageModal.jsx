@@ -8,6 +8,7 @@ const customStyles = {
     bottom: "auto",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
+    maxHeight: "90vh",
   },
 };
 
@@ -17,14 +18,12 @@ export default function ImageModal({ image, openModal, closeModal }) {
   const { urls, description, likes } = image;
 
   return (
-    <>
-      <Modal isOpen={openModal} isClose={closeModal} style={customStyles}>
-        <div>
-          <img src={urls.regular} alt={description} />
-          <p>{description}</p>
-          <p>Likes: {likes}</p>
-        </div>
-      </Modal>
-    </>
+    <Modal isOpen={openModal} onRequestClose={closeModal} style={customStyles}>
+      <div>
+        <img src={urls.regular} alt={description} />
+        <p>{description}</p>
+        <p>Likes: {likes}</p>
+      </div>
+    </Modal>
   );
 }
