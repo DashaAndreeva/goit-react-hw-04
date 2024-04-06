@@ -17,6 +17,7 @@ Modal.setAppElement("#root");
 export default function ImageModal({ image, openModal, closeModal }) {
   const { urls, description, likes } = image;
 
+  console.log(openModal);
   return (
     <Modal isOpen={openModal} onRequestClose={closeModal} style={customStyles}>
       <div>

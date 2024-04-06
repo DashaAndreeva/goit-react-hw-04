@@ -1,7 +1,8 @@
+import css from "./ImageCard.module.css";
+
 export default function ImageCard({ image, openModal }) {
-  
   const { urls } = image;
-  
+
   return (
     <div>
       <img
@@ -10,6 +11,7 @@ export default function ImageCard({ image, openModal }) {
         onClick={() => {
           openModal(image);
         }}
+        className={css["item-img"]}
       />
     </div>
   );

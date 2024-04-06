@@ -34,6 +34,7 @@ function App() {
       return res.data.results.slice(0, 9);
     } catch (error) {
       console.log("Error: ", error);
+      setError(error.message);
       return [];
     } finally {
       setLoading(false);
@@ -48,7 +49,7 @@ function App() {
           setImages((prevImg) => [...prevImg, ...newImages]);
         }
       } catch (error) {
-        setError(error);
+        setError(error.message);
       }
     };
 
@@ -79,7 +80,7 @@ function App() {
     <>
       <SearchBar onSubmit={handleSubmit} />
       {error ? (
-        <ErrorMessage />
+        <ErrorMessage message={error} />
       ) : (
         <ImageGallery images={images} openModal={modalOpen} />
       )}
@@ -88,7 +89,7 @@ function App() {
       {modalIsOpen && selectedImage && (
         <ImageModal
           image={selectedImage}
-          openModal={modalOpen}
+          openModal={modalIsOpen}
           closeModal={closeModal}
         />
       )}
